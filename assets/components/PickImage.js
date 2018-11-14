@@ -25,7 +25,8 @@ class PickImage extends Component {
              } else {
                 this.setState({
                     pickedImage: { uri: res.uri }
-                })
+                });
+                this.props.passImage(this.state.pickedImage)
             }
        });
     }

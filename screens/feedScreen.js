@@ -8,6 +8,8 @@ import HeadingText from '../assets/components/UI/HeadingText/HeadingText';
 import imagePlaceholder from '../assets/starbucks.png';
 import LocateMe from '../assets/components/LocateMe';
 import PickImage from '../assets/components/PickImage';
+import { addPlace, addImage } from '../redux/actions/sharePlace';
+import { connect } from 'react-redux'
 
 class FeedScreen extends Component {
     static navigationOptions = {
@@ -18,25 +20,29 @@ class FeedScreen extends Component {
     }; 
 
     state= {
-      image: {
-        value: null,
-        valid: false 
-      }
+      placeName: '',
+      img: null
     }
 
-    imagePickedHandler = image => {
-     this.setState(prevState => {
-       return {
-         controls: {
-           ...prevState.controls,
-           image: {
-             value: image,
-             valid: true
-           }
-         }
-       }
-     })
+    changePlaceName = (val) => {
+      this.setState({
+        placeName: val
+      })
     }
+
+    shareButton = () => {
+      console.log('Button Clicked')
+      this.props.addPlaceName(this.state.placeName)
+      this.props.addPlaceImage(this.state.img)
+      this.props.navigation.navigate('Shared Drinks')
+
+    }
+
+   imagePickedHandler = image => {
+     this.setState({
+       img: image
+     })
+   }
    
  render() {
   return (
@@ -52,22 +58,29 @@ class FeedScreen extends Component {
         <MainText>
           <HeadingText>Share a Drink with us!</HeadingText>
         </MainText>
-        <PickImage onImagePicked={this.imagePickedHandler} />
+        <PickImage passImage={this.imagePickedHandler}/>
         <LocateMe />
-          <DefaultInput placeholder="Place Name"/>
-        <View style={styles.button}>
-          <Button title="Share It!" onPress={() => this.props.navigation.navigate('Shared Drinks')}></Button>
-        </View> 
+          <DefaultInput placeholder="Place Caption"
+          value={this.state.placeName}
+          onChangeText={val => this.changePlaceName(val)}
+          />
         </View>
       </ScrollView>
+      <Button title="Share It!" onPress={this.shareButton}></Button>
     </ImageBackground>  
     );
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    addPlaceName: (placeName) => dispatch(addPlace(placeName)),
+    addPlaceImage: (placeImage) => dispatch(addImage(placeImage))
+  }
+}
 
 
-export default FeedScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -107,3 +120,5 @@ const styles = StyleSheet.create({
     height: 250
   }
 });
+
+export default connect(null, mapDispatchToProps)(FeedScreen);

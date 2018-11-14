@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, Button, View, TextInput, ImageBackground } from 'react-native';
+import { Platform, StyleSheet, Text, Button, View, TextInput, ImageBackground , Image} from 'react-native';
 import { Icon, Header, Left } from 'native-base';
 import backgroundImage from "../assets/background.jpg";
-
+import { connect } from 'react-redux'
 class SettingsScreen extends Component {
     static navigationOptions = {
         header:null,
@@ -10,9 +10,7 @@ class SettingsScreen extends Component {
             <Icon name="ios-cafe" style={{ fontSize:24, color: tintColor}}/>
           )
     };
-    state ={
-      text:""
-          }
+  
   render() {
    return (
     <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
@@ -22,16 +20,39 @@ class SettingsScreen extends Component {
                 onPress={() => this.props.navigation.openDrawer() }/>
           </Left>
     </Header>
-      <View>
-         
-          <Button style={{paddingTop:100}} title="Go to Home Screen" onPress={() => this.props.navigation.navigate('Home')}/>
-      </View>
+ 
+    <View>
+    <View style={styles.placeholder}>
+      <Image source={this.props.placeImage} style={styles.previewImage} />
+    </View>
+     
+         <Text>{this.props.placeName}</Text>
+         </View>
       </ImageBackground>
     );
   }
 }
-export default SettingsScreen;
+const mapStateToProps = state => {
+  return {
+  placeName: state.sharePlace.placeName,
+    placeImage: state.sharePlace.placeImage
+  }
+}
 const styles = StyleSheet.create({
+  placeholder: {
+    borderWidth: 1,
+    borderColor: 'black',
+    backgroundColor: '#d3d3d3',
+    width: '80%',
+    height: 150,
+    alignSelf: 'center',
+
+  },
+  previewImage: {
+    width: "100%",
+    height: "100%"
+    
+ },
   container: {
     flex: 1,
     paddingTop:100,
@@ -42,15 +63,9 @@ const styles = StyleSheet.create({
   backgroundImage: {
     width: "100%",
     flex: 1
- },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+ }
+  
 });
+
+
+export default connect(mapStateToProps)(SettingsScreen);

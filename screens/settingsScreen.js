@@ -13,7 +13,7 @@ class SettingsScreen extends Component {
   
   render() {
    return (
-    <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
+     <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
     <Header>
     <Left style={{marginLeft:"-40%"}}>
               <Icon name='menu' style={{paddingRight:50}}
@@ -21,13 +21,14 @@ class SettingsScreen extends Component {
           </Left>
     </Header>
  
-    <View>
+     
     <View style={styles.placeholder}>
       <Image source={this.props.placeImage} style={styles.previewImage} />
-    </View>
+      
      
-         <Text>{this.props.placeName}</Text>
-         </View>
+     <Text>{this.props.placeName}</Text>
+     
+      </View>
       </ImageBackground>
     );
   }
